@@ -30,11 +30,12 @@ Bitmap.prototype.render = function(target_element) {
     }
 };
 
-Bitmap.prototype.setColor = function(row, col, color) {
+Bitmap.prototype.setColor = function(row, col, color, localChange = true) {
     this.grid[row][col] = color;
     this.cells[row][col].style.background = color;
-    clientUpdates.clientupdates.push([row, col, color])
-    clientUpdates.sequence++
+    if (localChange) {
+        clientUpdates.clientupdates.push([row, col, color])
+    }
 }
 
 Bitmap.prototype.handleEvent = function(event) {

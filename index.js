@@ -10,16 +10,22 @@ app.use(express.json())
 app.post('/updates', (req, res) => {
     fs.readFile('./public/updates.json', 'utf8', (err, data) => {
         data = JSON.parse(data)
+        
         req.body.clientupdates.forEach(fill => {
             data.updates.push(fill)
         })
-
+        
         fs.writeFile('./public/updates.json', JSON.stringify(data), (err) => {
             if(err) throw err;
-            console.log('the file has been saved!')
         })
 
-        res.send(data)
+        let resArray = []
+
+        for (let index = req.body.sequence; index < data.updates.length; index++) {
+            resArray.push(data.updates[index])
+        }
+
+        res.send({updates: resArray, sequence: data.updates.length})
     })
 })
 
